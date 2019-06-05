@@ -30,6 +30,8 @@ Route::prefix('product')->name('product.')->group(function () {
 
 Route::resource('shop', 'ShopController');
 
+Route::resource('customer', 'CustomerController');
+
 Route::prefix('transaction')->name('transaction.')->group(function () {
     Route::resource('purchase', 'PurchaseController');
     Route::resource('selling', 'SellingController');

@@ -38,13 +38,13 @@
                         <!-- Date -->
                         <div class="form-group">
                             <label for="inputDate1">Tanggal</label>
-                            <input type="date" id="purchase-date" class="form-control">
+                            <input type="date" id="selling-date" class="form-control">
                         </div>
 
                         <!-- Time -->
                         <div class="form-group">
                             <label for="inputDate1">Jam</label>
-                            <input type="time" id="purchase-time" class="form-control">
+                            <input type="time" id="selling-time" class="form-control">
                         </div>
 
                         <!-- Customer -->
@@ -57,12 +57,16 @@
                             </select>
                         </div>
 
+                        <div class="form-group">
+                            <a href="" data-target="#addCustomerModal" data-toggle="modal" class="btn btn-secondary btn-sm">Tambah Baru</a>
+                        </div>
+
                         <!-- Cashier -->
                         <div class="form-group">
                             <label>Kasir</label>
                             @foreach($cashier as $key)
-                            <input name="cashier" id="cashier" value="{{ $key->id }}" type="hidden" class="form-control">
-                            <input value="{{ $key->name }}" disabled class="form-control">
+                            <input name="cashier" value="{{ $key->id }}" type="hidden" class="form-control">
+                            <input value="{{ $key->name }}" type="text" disabled class="form-control">
                             @endforeach
                         </div>
 
@@ -85,7 +89,7 @@
                     <form action="" method="POST">
                         {{ csrf_field() }}
 
-                        <input type="hidden" name="purchase_code" value="">
+                        <input type="hidden" name="selling_code" value="">
                         <!-- Search Product -->
                         <div class="form-group">
                             <label class="col-form-label">Cari Barang</label>
@@ -131,7 +135,7 @@
                     Invoice
                 </h5>
                 <div class="card-body">
-                    <h3 id="purchase-code"></h3>
+                    <h3 id="selling-code">{{ $code }}</h3>
                     <h1>Rp <span class="total-invoice" id="grand-total">0000000</span></h1>
                 </div>
             </div>
@@ -214,7 +218,7 @@
                                                     <div class="form-group">
                                                         <label for="">Harga Beli</label>
                                                         <input type="text" readonly="readonly" disabled class="form-control" value="">
-                                                        <input type="hidden" name="purchase_price" class="form-control" value="">
+                                                        <input type="hidden" name="selling_price" class="form-control" value="">
                                                     </div>
 
                                                     <!-- QTY -->
@@ -345,6 +349,8 @@
         <!-- End Button Submit -->
         <!-- ============================================================== -->
     </div>
+
+
     <!-- ============================================================== -->
     <!-- Product Modal -->
     <!-- ============================================================== -->
@@ -369,16 +375,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-
+                                @foreach($items as $key)
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>{{ $key->code }}</td>
+                                    <td>{{ $key->name }}</td>
+                                    <td>{{ $key->selling_price }}</td>
                                     <td>
                                         <button type="submit" data-dismiss="modal" class="btn-select btn btn-sm text-dark btn-info"><i class="fas fa-fw fa-plus"></i></button>
                                     </td>
                                 </tr>
-
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -388,6 +394,45 @@
     </div>
     <!-- ============================================================== -->
     <!-- End Product Modal -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Add Customer Modal -->
+    <!-- ============================================================== -->
+    <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Customer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('customer.store') }}" method="POST">
+
+                        {{ csrf_field() }}
+
+                        <div class="form-group">
+                            <label for="">Nama</label>
+                            <input type="text" class="form-control" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Telepon</label>
+                            <input type="text" class="form-control phone-inputmask" name="telephone">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Alamat</label>
+                            <textarea type="text" class="form-control" name="address"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Tambah</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Add Customer Modal -->
     <!-- ============================================================== -->
 
 

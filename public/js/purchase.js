@@ -21,14 +21,12 @@ $(document).ready(function () {
     })
 
 
-    // Purchase
     var today = new Date().toISOString().substr(0, 10)
     $('#purchase-date').val(today)
 
     var now = new Date().toTimeString()
     var nowStr = now.split(" ")
     $('#purchase-time').val(nowStr[0])
-    console.log(nowStr[0])
 
 
     // Insert To Table Purchase
