@@ -86,10 +86,10 @@
                     Tambah Barang
                 </h5>
                 <div class="card-body">
-                    <form action="" method="POST">
+                    <form action="{{ route('transaction.selling.detail.create') }}" method="POST">
                         {{ csrf_field() }}
 
-                        <input type="hidden" name="selling_code" value="">
+                        <input type="hidden" name="selling_code" value="{{ $code }}">
                         <!-- Search Product -->
                         <div class="form-group">
                             <label class="col-form-label">Cari Barang</label>
@@ -171,20 +171,21 @@
                                 </tr>
                             </thead>
                             <tbody>
-
+                                @foreach($selling_details as $key)
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="sub-total"></td>
+                                    <td>{{ $key->product_item_code }}</td>
+                                    <td>{{ $key->name }}</td>
+                                    <td>{{ $key->qty }}</td>
+                                    <td>{{ $key->selling_price }}</td>
+                                    <td>{{ $key->sub_total }}</td>
+                                    <td>{{ $key->discount }}</td>
+                                    <td class="sub-total">{{ $key->total }}</td>
                                     <td class="d-flex">
                                         <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#editModal"><i class="fas fa-fw fa-edit"></i></button>
                                         <a href="" class="btn btn-danger"><i class="fas fa-fw fa-trash"></i></a>
                                     </td>
                                 </tr>
+                                @endforeach
                                 <!-- ============================================================== -->
                                 <!-- Edit Modal -->
                                 <!-- ============================================================== -->

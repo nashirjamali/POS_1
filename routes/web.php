@@ -47,6 +47,6 @@ Route::prefix('transaction')->name('transaction.')->group(function () {
 
     // Selling
     Route::prefix('selling')->name('selling.')->group(function(){
-
+        Route::post('/create-detail', 'SellingController@detailInsert')->name('detail.create');
     });
 });

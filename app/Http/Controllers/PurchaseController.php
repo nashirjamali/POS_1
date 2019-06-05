@@ -262,13 +262,6 @@ class PurchaseController extends Controller
         $purchase_price = DB::table('product_items')->select('purchase_price')->where('code', '=', $item_code)->first()->purchase_price;
         $sub_total = $purchase_price * (int)$qty;
 
-        // $isStock = DB::table('stocks')
-        //     ->where('shop_id', '=', 1)
-        //     ->where('product_item_code', '=', $item_code)
-        //     ->first();
-
-
-
         DB::table('purchase_temps')->insert([
             'purchase_code' => $purchase_code,
             'product_item_code' => $item_code,

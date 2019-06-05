@@ -42,8 +42,30 @@ class SellingController extends Controller
             ->get();
 
         $code = $this->genereteCode();
+        $selling_code = $code;
 
-        return view('selling.selling_add', ['customers' => $customers, 'cashier' => $cashier, 'items' => $items, 'code' => $code]);
+        $selling_details = DB::table('selling_temps')
+            ->where('selling_code', '=', $selling_code)
+            ->join('product_items', 'selling_temps.product_item_code', '=', 'product_items.code')
+            ->select(
+                'id',
+                'product_item_code',
+                'qty',
+                'sub_total',
+                'total',
+                'discount',
+                'product_items.name as name',
+                'product_items.selling_price as selling_price'
+            )
+            ->get();
+
+        return view('selling.selling_add', [
+            'customers' => $customers,
+            'cashier' => $cashier,
+            'items' => $items,
+            'code' => $code,
+            'selling_details' => $selling_details
+        ]);
     }
 
     /**
@@ -119,5 +141,30 @@ class SellingController extends Controller
         }
 
         return $code;
+    }
+
+    public function detailInsert(Request $request)
+    {
+        $selling_code = $request->get('selling_code');
+        $item_code = $request->get('item_code');
+        $qty = $request->get('qty');
+        $discount = $request->get('discount');
+        $selling_price = DB::table('product_items')->where('code', '=', $item_code)->first()->selling_price;
+        $purchase_price = DB::table('product_items')->where('code', '=', $item_code)->first()->purchase_price;
+        $sub_total = $selling_price * (int)$qty;
+        $total = $sub_total - ($sub_total * (int)$discount / 100);
+        $profit = ($selling_price * $qty) - ($purchase_price * $qty);
+
+        DB::table('selling_temps')->insert([
+            'selling_code' => $selling_code,
+            'product_item_code' => $item_code,
+            'qty' => $qty,
+            'sub_total' => $sub_total,
+            'discount' => $discount,
+            'total' => $total,
+            'profit' => $profit
+        ]);
+
+        return redirect('transaction/selling/create');
     }
 }
