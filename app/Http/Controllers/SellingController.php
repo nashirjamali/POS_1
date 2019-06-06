@@ -26,7 +26,7 @@ class SellingController extends Controller
     public function create()
     {
         $customers = DB::table('customers')->get();
-        $cashier = DB::table('employees')->get();
+        $cashier = DB::table('employees')->where('id', '=', 1)->first();
         $items = DB::table('product_items')
             ->join('product_categories', 'product_items.category_id', '=', 'product_categories.id')
             ->join('product_units', 'product_items.unit_id', '=', 'product_units.id')
@@ -126,6 +126,30 @@ class SellingController extends Controller
         //
     }
 
+    public function insert(Request $request)
+    {
+        $selling_code = $request->get('sellingCode');
+        $selling_date = $request->get('sellingDate');
+        $selling_time = $request->get('sellingTime');
+        $customer_id = $request->get('customerId');
+        $cashier_id = $request->get('cashierId');
+        $discount = $request->get('discount');
+        $note = $request->get('note');
+        $sumTotal = 0;
+        $purchase_price = 0;
+
+        $sellingDetailTemps = DB::table('selling_temps')->where('selling_code', '=', $selling_code)->get();
+        foreach ($sellingDetailTemps as $key) {
+            $purchase_price += DB::table('product_items')->where('code', '=', $key->product_item_code)->first()->purchase_price * $key->qty;
+            $sumTotal += $key->total;
+        }
+
+        $grandTotal = $sumTotal - ($sumTotal * (int)$discount / 100);
+        $profitAll = $grandTotal - $purchase_price;
+
+        return 1;
+    }
+
     public function genereteCode()
     {
         $today = Carbon::today();
@@ -155,7 +179,7 @@ class SellingController extends Controller
         $purchase_price = DB::table('product_items')->where('code', '=', $item_code)->first()->purchase_price;
         $sub_total = $selling_price * (int)$qty;
         $total = $sub_total - ($sub_total * (int)$discount / 100);
-        $profit = ($selling_price * $qty) - ($purchase_price * $qty);
+        $profit = $total - ($purchase_price * $qty);
 
         DB::table('selling_temps')->insert([
             'selling_code' => $selling_code,

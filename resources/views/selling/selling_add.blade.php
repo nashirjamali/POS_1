@@ -64,10 +64,8 @@
                         <!-- Cashier -->
                         <div class="form-group">
                             <label>Kasir</label>
-                            @foreach($cashier as $key)
-                            <input name="cashier" value="{{ $key->id }}" type="hidden" class="form-control">
-                            <input value="{{ $key->name }}" type="text" disabled class="form-control">
-                            @endforeach
+                            <input name="cashier" value="{{ $cashier->id }}" type="hidden" class="form-control">
+                            <input value="{{ $cashier->name }}" type="text" disabled class="form-control">
                         </div>
 
                     </form>
@@ -111,7 +109,7 @@
                             <!-- Discount -->
                             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 form-group">
                                 <label>Diskon</label>
-                                <input type="number" name="discount" id="discount" class="form-control">
+                                <input type="number" name="discount" id="discount-item" class="form-control">
                             </div>
 
                         </div>
@@ -136,7 +134,7 @@
                 </h5>
                 <div class="card-body">
                     <h3 id="selling-code">{{ $code }}</h3>
-                    <h1>Rp <span class="total-invoice" id="grand-total">0000000</span></h1>
+                    <h1>Rp <span class="grand-total">0000000</span></h1>
                 </div>
             </div>
         </div>
@@ -270,19 +268,19 @@
                         <div class="form-group">
                             <label for="">Sub Total</label>
                             <div class="input-group mb-3"><span class="input-group-prepend"><span class="input-group-text">Rp</span></span>
-                                <input type="text" disabled class="form-control">
+                                <input id="total" type="text" disabled class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="">Diskon</label>
-                            <input type="number" class="form-control">
+                            <input id="discount" type="number" class="form-control">
                         </div>
 
                         <div class="form-group">
                             <label for="">Grand Total</label>
                             <div class="input-group mb-3"><span class="input-group-prepend"><span class="input-group-text">Rp</span></span>
-                                <input type="text" disabled class="form-control">
+                                <input type="text" disabled class="form-control grand-total">
                             </div>
                         </div>
 
@@ -307,14 +305,14 @@
                         <div class="form-group">
                             <label for="">Cash</label>
                             <div class="input-group mb-3"><span class="input-group-prepend"><span class="input-group-text">Rp</span></span>
-                                <input type="text" class="form-control">
+                                <input type="text" id="cash" class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="">Change</label>
                             <div class="input-group mb-3"><span class="input-group-prepend"><span class="input-group-text">Rp</span></span>
-                                <input type="text" disabled class="form-control">
+                                <input type="text" id="change" disabled class="form-control">
                             </div>
                         </div>
 
