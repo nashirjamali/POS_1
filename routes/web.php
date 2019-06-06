@@ -48,5 +48,7 @@ Route::prefix('transaction')->name('transaction.')->group(function () {
     // Selling
     Route::prefix('selling')->name('selling.')->group(function(){
         Route::post('/create-detail', 'SellingController@detailInsert')->name('detail.create');
+        Route::post('/update-detail/{id}', 'SellingController@detailUpdate')->name('detail.update');
+        Route::get('/delete-detail/{id}', 'SellingController@detailDelete')->name('detail.delete');
     });
 });

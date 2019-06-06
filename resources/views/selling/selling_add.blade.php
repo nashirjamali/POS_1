@@ -182,10 +182,10 @@
                                     <td class="sub-total">{{ $key->total }}</td>
                                     <td class="d-flex">
                                         <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#editModal"><i class="fas fa-fw fa-edit"></i></button>
-                                        <a href="" class="btn btn-danger"><i class="fas fa-fw fa-trash"></i></a>
+                                        <a href="{{ route('transaction.selling.detail.delete', $key->id) }}" class="btn btn-danger"><i class="fas fa-fw fa-trash"></i></a>
                                     </td>
                                 </tr>
-                                @endforeach
+
                                 <!-- ============================================================== -->
                                 <!-- Edit Modal -->
                                 <!-- ============================================================== -->
@@ -199,33 +199,40 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="" method="POST">
+                                                <form action="{{ route('transaction.selling.detail.update', $key->id) }}" method="POST">
 
                                                     {{ csrf_field() }}
 
                                                     <!-- Product Item Code -->
                                                     <div class="form-group">
                                                         <label for="">Kode Barang</label>
-                                                        <input type="text" name="item_code" disabled class="form-control" value="">
+                                                        <input type="text" name="item_code" disabled class="form-control" value="{{ $key->product_item_code }}">
                                                     </div>
 
                                                     <!-- Product Item Name -->
                                                     <div class="form-group">
                                                         <label for="">Nama Barang</label>
-                                                        <input type="text" disabled class="form-control" value="">
+                                                        <input type="text" disabled class="form-control" value="{{ $key->name }}">
                                                     </div>
 
-                                                    <!-- Purchase Price -->
+                                                    <!-- Selling Price -->
                                                     <div class="form-group">
-                                                        <label for="">Harga Beli</label>
-                                                        <input type="text" readonly="readonly" disabled class="form-control" value="">
-                                                        <input type="hidden" name="selling_price" class="form-control" value="">
+                                                        <label for="">Harga</label>
+                                                        <input type="text" readonly="readonly" disabled class="form-control" value="{{ $key->selling_price }}">
+                                                        <input type="hidden" name="selling_price" class="form-control" value="{{ $key->selling_price }}">
+                                                        <input type="hidden" name="purchase_price"  class="form-control" value="{{ $key->purchase_price }}">
                                                     </div>
 
                                                     <!-- QTY -->
                                                     <div class="form-group">
                                                         <label for="">QTY</label>
-                                                        <input type="number" name="qty" class="form-control" value="">
+                                                        <input type="number" name="qty" class="form-control" value="{{ $key->qty }}">
+                                                    </div>
+
+                                                    <!-- Discount -->
+                                                    <div class="form-group">
+                                                        <label for="">Diskon</label>
+                                                        <input type="number" name="discount" class="form-control" value="{{ $key->discount }}">
                                                     </div>
 
                                                     <button type="submit" class="btn btn-primary">Update</button>
@@ -237,7 +244,7 @@
                                 <!-- ============================================================== -->
                                 <!-- End Edit Modal -->
                                 <!-- ============================================================== -->
-
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

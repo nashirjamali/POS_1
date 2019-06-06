@@ -54,8 +54,10 @@ class SellingController extends Controller
                 'sub_total',
                 'total',
                 'discount',
+                'profit',
                 'product_items.name as name',
-                'product_items.selling_price as selling_price'
+                'product_items.selling_price as selling_price',
+                'product_items.purchase_price as purchase_price'
             )
             ->get();
 
@@ -164,6 +166,37 @@ class SellingController extends Controller
             'total' => $total,
             'profit' => $profit
         ]);
+
+        return redirect('transaction/selling/create');
+    }
+
+    public function detailUpdate(Request $request, $id)
+    {
+        $qty = $request->get('qty');
+        $discount = $request->get('discount');
+        $selling_price = $request->get('selling_price');
+        $purchase_price = $request->get('purchase_price');
+        $sub_total = $selling_price * (int)$qty;
+        $total = $sub_total - ($sub_total * (int)$discount / 100);
+        $profit = ($selling_price * $qty) - ($purchase_price * $qty);
+
+        DB::table('selling_temps')
+            ->where('id', '=', $id)
+            ->update([
+                'qty' => $qty,
+                'discount' => $discount,
+                'sub_total' => $sub_total,
+                'total' => $total,
+                'profit' => $profit
+            ]);
+
+        return redirect('/transaction/selling/create');
+    }
+
+    public function detailDelete($id)
+    {
+        DB::table('selling_temps')
+            ->delete($id);
 
         return redirect('transaction/selling/create');
     }
