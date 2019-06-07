@@ -91,7 +91,30 @@ class SellingController extends Controller
      */
     public function show($id)
     {
-        //
+        $sellings = DB::table('sellings')
+            ->where('code', '=', $id)
+            ->join('customers', 'sellings.customer_id', '=', 'customers.id')
+            ->join('employees', 'sellings.cashier_id', '=', 'employees.id')
+            ->select([
+                'code',
+                'date',
+                'time',
+                'grand_total',
+                'note',
+                'customers.name as customer_name',
+                'customers.address as customer_address',
+                'customers.telephone as customer_telephone',
+                'employees.name as cashier_name'
+            ])
+            ->get();
+
+
+        $selling_details = DB::table('selling_details')
+            ->join('product_items', 'selling_details.product_item_code', '=', 'product_items.code')
+            ->where('selling_code', '=', $id)
+            ->get();
+
+        return view('selling.selling_detail', ['sellings' => $sellings, 'selling_details' => $selling_details]);
     }
 
     /**
