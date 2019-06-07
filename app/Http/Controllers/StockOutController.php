@@ -25,8 +25,9 @@ class StockOutController extends Controller
     public function create()
     {
         $shops = DB::table('shops')->get();
+        $items = DB::table('product_items')->get();
 
-        return view('stock_out.out_add', ['shops' => $shops]);
+        return view('stock_out.out_add', ['shops' => $shops, 'items' => $items]);
     }
 
     /**
@@ -83,5 +84,18 @@ class StockOutController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function checkStock(Request $request)
+    {
+        $shopId = $request->get('shopId');
+        $itemCode = $request->get('itemCode');
+        $stock = DB::table('stocks')
+            ->where('shop_id', '=', $shopId)
+            ->where('product_item_code', '=', $itemCode)
+            ->join('product_items', 'stocks.product_item_code', '=', 'product_items.code')
+            ->get();
+
+        return $stock;
     }
 }

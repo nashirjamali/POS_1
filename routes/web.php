@@ -55,4 +55,7 @@ Route::prefix('transaction')->name('transaction.')->group(function () {
 
     // Stock Out
     Route::resource('stock-out', 'StockOutController');
+    Route::prefix('stock-out')->name('stock-out.')->group(function (){
+        Route::post('/check-stock', 'StockOutController@checkStock')->name('check-stock');
+    });
 });

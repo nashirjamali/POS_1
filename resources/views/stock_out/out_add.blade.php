@@ -62,23 +62,23 @@
                             <!-- Stock -->
                             <div class="form-group col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <label class="col-form-label">Stok</label>
-                                <input type="text" disabled class="form-control">
+                                <input type="text" disabled id="stock" class="form-control">
                             </div>
 
                             <!-- Detail -->
                             <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <label class="col-form-label">Detail</label>
-                                <input type="text" class="form-control" placeholder="Contoh : Rusak, Hilang, dsb">
+                                <input type="text" id="detail" class="form-control" placeholder="Contoh : Rusak, Hilang, dsb">
                             </div>
 
                             <!-- QTY -->
                             <div class="form-group col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12"">
                                 <label for="">Qty</label>
-                                <input type="number" class="form-control">
+                                <input type="number" id="qty" class="form-control">
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary mt-4" name="submit">Submit</button>
+                        <button type="submit" id="btn-submit" class="btn btn-primary mt-4" name="submit">Submit</button>
                     </form>
                 </div>
             </div>
@@ -90,7 +90,7 @@
 <!-- Product Modal -->
 <!-- ============================================================== -->
 <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl mw-100 w-75" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Daftar Barang</h5>
@@ -109,13 +109,15 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($items as $key)
                             <tr>
-                                <td></td>
-                                <td></td>
+                                <td>{{ $key->code }}</td>
+                                <td>{{ $key->name }}</td>
                                 <td>
                                     <button type="submit" data-dismiss="modal" class="btn-select btn btn-sm text-dark btn-info"><i class="fas fa-fw fa-plus"></i></button>
                                 </td>
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
