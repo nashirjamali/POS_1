@@ -1,5 +1,8 @@
 $(document).ready(function () {
     
+    var today = new Date().toISOString().substr(0, 10)
+    $('#date').val(today)
+    
     $('.btn-select').click(function () {
 
         var $row = $(this).closest("tr"),

@@ -68,13 +68,13 @@
                             <!-- Detail -->
                             <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <label class="col-form-label">Detail</label>
-                                <input type="text" id="detail" class="form-control" placeholder="Contoh : Rusak, Hilang, dsb">
+                                <input type="text" id="detail" class="form-control" name="detail" placeholder="Contoh : Rusak, Hilang, dsb">
                             </div>
 
                             <!-- QTY -->
                             <div class="form-group col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12"">
                                 <label for="">Qty</label>
-                                <input type="number" id="qty" class="form-control">
+                                <input type="number" id="qty" class="form-control" name="qty">
                             </div>
                         </div>
 
