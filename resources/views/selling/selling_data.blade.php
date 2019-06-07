@@ -37,26 +37,24 @@
                                     <th>Kode</th>
                                     <th>Tanggal</th>
                                     <th>Jam</th>
-                                    <th>Toko</th>
                                     <th>Keuntungan</th>
                                     <th>Total</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                
+                                @foreach($sellings as $key)
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>{{ $key->code }}</td>
+                                    <td>{{ $key->date }}</td>
+                                    <td>{{ $key->time }}</td>
+                                    <td>{{ $key->profit_total }}</td>
+                                    <td>{{ $key->grand_total }}</td>
                                     <td class="d-flex">
                                         <a href="" class="btn btn-secondary">Lihat</a>
                                     </td>
                                 </tr>
-                                
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

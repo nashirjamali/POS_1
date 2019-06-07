@@ -18,12 +18,14 @@ class CreateSellingsTable extends Migration
             $table->string('code')->index();
             $table->date('date');
             $table->time('time');
-            $table->bigInteger('chasier_id')->unsigned();
-            $table->foreign('chasier_id')->references('id')->on('employees');
+            $table->bigInteger('shop_id')->unsigned();
+            $table->foreign('shop_id')->references('id')->on('shops')->onDelete('cascade');
+            $table->bigInteger('cashier_id')->unsigned();
+            $table->foreign('cashier_id')->references('id')->on('employees');
             $table->bigInteger('customer_id')->unsigned();
             $table->foreign('customer_id')->references('id')->on('customers');
             $table->integer('sub_total');
-            $table->integer('discount');
+            $table->integer('discount')->nullable();
             $table->integer('grand_total');
             $table->integer('cash');
             $table->integer('change');

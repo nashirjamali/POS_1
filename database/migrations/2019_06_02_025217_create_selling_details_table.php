@@ -21,7 +21,7 @@ class CreateSellingDetailsTable extends Migration
             $table->foreign('product_item_code')->references('code')->on('product_items');
             $table->integer('qty');
             $table->integer('sub_total');
-            $table->integer('discount');
+            $table->integer('discount')->nullable();
             $table->integer('total');
             $table->integer('profit');
             $table->timestamps();

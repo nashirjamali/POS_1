@@ -64,7 +64,7 @@
                         <!-- Cashier -->
                         <div class="form-group">
                             <label>Kasir</label>
-                            <input name="cashier" value="{{ $cashier->id }}" type="hidden" class="form-control">
+                            <input name="cashier" value="{{ $cashier->id }}" id="cashier" type="hidden" class="form-control">
                             <input value="{{ $cashier->name }}" type="text" disabled class="form-control">
                         </div>
 
@@ -281,6 +281,7 @@
                             <label for="">Grand Total</label>
                             <div class="input-group mb-3"><span class="input-group-prepend"><span class="input-group-text">Rp</span></span>
                                 <input type="text" disabled class="form-control grand-total">
+                                <input type="hidden" name="" id="grand-total-hidden">
                             </div>
                         </div>
 

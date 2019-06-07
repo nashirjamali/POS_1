@@ -15,7 +15,9 @@ class SellingController extends Controller
      */
     public function index()
     {
-        return view('selling.selling_data');
+        $sellings = DB::table('sellings')->get();
+
+        return view('selling.selling_data', ['sellings' => $sellings]);
     }
 
     /**
@@ -134,18 +136,65 @@ class SellingController extends Controller
         $customer_id = $request->get('customerId');
         $cashier_id = $request->get('cashierId');
         $discount = $request->get('discount');
+        $cash = $request->get('cash');
+        $change = $request->get('change');
         $note = $request->get('note');
+        $shop_id = 1;
         $sumTotal = 0;
         $purchase_price = 0;
 
         $sellingDetailTemps = DB::table('selling_temps')->where('selling_code', '=', $selling_code)->get();
+
         foreach ($sellingDetailTemps as $key) {
             $purchase_price += DB::table('product_items')->where('code', '=', $key->product_item_code)->first()->purchase_price * $key->qty;
             $sumTotal += $key->total;
         }
 
-        $grandTotal = $sumTotal - ($sumTotal * (int)$discount / 100);
-        $profitAll = $grandTotal - $purchase_price;
+        $grand_total = $sumTotal - ($sumTotal * (int)$discount / 100);
+        $profit_total = $grand_total - $purchase_price;
+
+        DB::table('sellings')->insert([
+            'code' => $selling_code,
+            'date' => $selling_date,
+            'time' => $selling_time,
+            'shop_id' => $shop_id,
+            'cashier_id' => $cashier_id,
+            'customer_id' => $customer_id,
+            'sub_total' => $sumTotal,
+            'discount' => $discount,
+            'grand_total' => $grand_total,
+            'cash' => $cash,
+            'change' => $change,
+            'note' => $note,
+            'profit_total' => $profit_total
+        ]);
+
+        foreach ($sellingDetailTemps as $key) {
+            DB::table('selling_details')->insert([
+                'selling_code' => $key->selling_code,
+                'product_item_code' => $key->product_item_code,
+                'qty' => $key->qty,
+                'sub_total' => $key->sub_total,
+                'discount' => $key->discount,
+                'total' => $key->total,
+                'profit' => $key->profit
+            ]);
+
+            $stock = DB::table('stocks')
+                ->where('product_item_code', '=', $key->product_item_code)
+                ->where('shop_id', '=', $shop_id)
+                ->first()
+                ->stock - $key->qty;
+
+            DB::table('stocks')
+                ->where('product_item_code', '=', $key->product_item_code)
+                ->where('shop_id', '=', $shop_id)
+                ->update([
+                    'stock' => $stock
+                ]);
+        }
+
+        DB::table('selling_temps')->where('selling_code', '=', $selling_code)->delete();
 
         return 1;
     }

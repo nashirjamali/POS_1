@@ -1,4 +1,6 @@
 $(document).ready(function () {
+
+    var grandTotal = 0;
     var today = new Date().toISOString().substr(0, 10)
     $('#selling-date').val(today)
 
@@ -20,6 +22,7 @@ $(document).ready(function () {
     $('.sub-total').each(function () {
         var value = $(this).text();
         sum += parseInt(value)
+        $('#grand-total-hidden').val(sum)
         total = sum.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
         $('#total').val(total)
         $('.grand-total').val(total)
@@ -28,13 +31,17 @@ $(document).ready(function () {
 
     $('#discount').keyup(function () {
         var grandTotal = sum - (sum * $(this).val() / 100)
+        $('#grand-total-hidden').val(grandTotal)
         grandTotal = grandTotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
         $('.grand-total').val(grandTotal)
         $('.grand-total').html(grandTotal)
     })
 
     $('#cash').keyup(function () {
-        
+        var cash = $(this).val();
+        var grandTotal = $('#grand-total-hidden').val()
+        var change = cash - grandTotal
+        $('#change').val(change)
     })
 
     $('#btn-submit').click(function () {
@@ -44,6 +51,8 @@ $(document).ready(function () {
         var customerId = $('#customer :selected').val()
         var cashierId = $('#cashier').val()
         var discount = $('#discount').val()
+        var cash = $('#cash').val()
+        var change = $('#change').val()
         var note = $('#note').val()
         var _token = $('input[name="_token"]').val();
 
@@ -63,6 +72,8 @@ $(document).ready(function () {
                 customerId: customerId,
                 cashierId: cashierId,
                 discount: discount,
+                cash: cash,
+                change: change,
                 note: note,
                 _token: _token
             },
