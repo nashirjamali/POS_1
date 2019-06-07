@@ -33,10 +33,9 @@ Route::resource('shop', 'ShopController');
 Route::resource('customer', 'CustomerController');
 
 Route::prefix('transaction')->name('transaction.')->group(function () {
-    Route::resource('purchase', 'PurchaseController');
-    Route::resource('selling', 'SellingController');
 
     // Purchase
+    Route::resource('purchase', 'PurchaseController');
     Route::prefix('purchase')->name('purchase.')->group(function(){
         Route::post('/insert', 'PurchaseController@insert')->name('insert');
         Route::post('/create-detail', 'PurchaseController@detailInsert')->name('detail.create');
@@ -46,10 +45,14 @@ Route::prefix('transaction')->name('transaction.')->group(function () {
     });
 
     // Selling
+    Route::resource('selling', 'SellingController');
     Route::prefix('selling')->name('selling.')->group(function(){
         Route::post('/insert', 'SellingController@insert')->name('insert');
         Route::post('/create-detail', 'SellingController@detailInsert')->name('detail.create');
         Route::post('/update-detail/{id}', 'SellingController@detailUpdate')->name('detail.update');
         Route::get('/delete-detail/{id}', 'SellingController@detailDelete')->name('detail.delete');
     });
+
+    // Stock Out
+    Route::resource('stock-out', 'StockOutController');
 });
