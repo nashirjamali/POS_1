@@ -12,47 +12,54 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
-});
+Auth::routes();
 
-Route::resource('supplier', 'SupplierController');
+Route::group(['middleware'    => 'auth'], function () {
 
-Route::prefix('product')->name('product.')->group(function () {
-    Route::resource('unit', 'ProductUnitController');
-    Route::resource('category', 'ProductCategoryController');
-    Route::resource('item', 'ProductItemController');
+        Route::get('/', function () {
+            return view('dashboard');
+        });
 
-    Route::prefix('item')->name('product.item.')->group(function () {
-        Route::post('/check-code', ['uses' => 'ProductItemController@checkCode']);
-    });
-});
+        Route::resource('supplier', 'SupplierController');
 
-Route::resource('shop', 'ShopController');
+        Route::prefix('product')->name('product.')->group(function () {
+            Route::resource('unit', 'ProductUnitController');
+            Route::resource('category', 'ProductCategoryController');
+            Route::resource('item', 'ProductItemController');
 
-Route::resource('customer', 'CustomerController');
+            Route::prefix('item')->name('product.item.')->group(function () {
+                Route::post('/check-code', ['uses' => 'ProductItemController@checkCode']);
+            });
+        });
 
-Route::prefix('transaction')->name('transaction.')->group(function () {
+        Route::resource('shop', 'ShopController');
 
-    // Purchase
-    Route::resource('purchase', 'PurchaseController');
-    Route::prefix('purchase')->name('purchase.')->group(function(){
-        Route::post('/insert', 'PurchaseController@insert')->name('insert');
-        Route::post('/create-detail', 'PurchaseController@detailInsert')->name('detail.create');
-        Route::post('/update-detail/{id}', 'PurchaseController@detailUpdate')->name('detail.update');
-        Route::get('/delete-detail/{id}', 'PurchaseController@detailDelete')->name('detail.delete');
-        Route::get('/detail/{id}', 'PurchaseController@detail')->name('detail.index');
-    });
+        Route::resource('customer', 'CustomerController');
 
-    // Selling
-    Route::resource('selling', 'SellingController');
-    Route::prefix('selling')->name('selling.')->group(function(){
-        Route::post('/insert', 'SellingController@insert')->name('insert');
-        Route::post('/create-detail', 'SellingController@detailInsert')->name('detail.create');
-        Route::post('/update-detail/{id}', 'SellingController@detailUpdate')->name('detail.update');
-        Route::get('/delete-detail/{id}', 'SellingController@detailDelete')->name('detail.delete');
-    });
+        Route::prefix('transaction')->name('transaction.')->group(function () {
 
-    // Stock Out
-    Route::resource('stock-out', 'StockOutController');
-});
+            // Purchase
+            Route::resource('purchase', 'PurchaseController');
+            Route::prefix('purchase')->name('purchase.')->group(function(){
+                Route::post('/insert', 'PurchaseController@insert')->name('insert');
+                Route::post('/create-detail', 'PurchaseController@detailInsert')->name('detail.create');
+                Route::post('/update-detail/{id}', 'PurchaseController@detailUpdate')->name('detail.update');
+                Route::get('/delete-detail/{id}', 'PurchaseController@detailDelete')->name('detail.delete');
+                Route::get('/detail/{id}', 'PurchaseController@detail')->name('detail.index');
+            });
+
+            // Selling
+            Route::resource('selling', 'SellingController');
+            Route::prefix('selling')->name('selling.')->group(function(){
+                Route::post('/insert', 'SellingController@insert')->name('insert');
+                Route::post('/create-detail', 'SellingController@detailInsert')->name('detail.create');
+                Route::post('/update-detail/{id}', 'SellingController@detailUpdate')->name('detail.update');
+                Route::get('/delete-detail/{id}', 'SellingController@detailDelete')->name('detail.delete');
+            });
+
+            // Stock Out
+            Route::resource('stock-out', 'StockOutController');
+        });
+
+  });
+

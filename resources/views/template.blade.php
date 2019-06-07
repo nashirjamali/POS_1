@@ -40,10 +40,16 @@
                             <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('assets/assets/images/avatar-1.jpg') }}" alt="" class="user-avatar-md rounded-circle"></a>
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
                                 <div class="nav-user-info">
-                                    <h5 class="mb-0 text-white nav-user-name">John Abraham</h5>
+                                    <h5 class="mb-0 text-white nav-user-name">{{Auth::user()->name}}</h5>
                                     <span class="status"></span><span class="ml-2">Available</span>
                                 </div>
-                                <a class="dropdown-item" href="#"><i class="fas fa-power-off mr-2"></i>Logout</a>
+                                <a class="dropdown-item" href="{{ route('logout') }}"  onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();"> <i class="fas fa-power-off mr-2"></i>
+                                {{ __('Logout') }} 
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
                             </div>
                         </li>
                     </ul>
@@ -122,13 +128,15 @@
 										</li>
 									</ul>
 								</div>
-							</li>
+                            </li>
+                            @if(Auth::user()->role == "admin")
 							<li class="nav-divider">
 								Pengaturan
 							</li>
 							<li class="nav-item ">
 								<a class="nav-link" href="#"><i class="fab fa-fw fa-wpforms"></i>Users</a>
-							</li>
+                            </li>
+                            @endif
 						</ul>
 					</div>
 				</nav>
