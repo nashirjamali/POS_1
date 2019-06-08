@@ -58,4 +58,7 @@ Route::prefix('transaction')->name('transaction.')->group(function () {
     Route::prefix('stock-out')->name('stock-out.')->group(function (){
         Route::post('/check-stock', 'StockOutController@checkStock')->name('check-stock');
     });
+
+    // Mutation
+    Route::resource('mutation', 'MutationController');
 });

@@ -107,7 +107,9 @@
                                         <li class="nav-item">
                                             <a class="nav-link {{ request()->is('transaction/stock-out*') ? 'active' : '' }}" href="{{ route('transaction.stock-out.index') }}">Stock Out</a>
                                         </li>
-
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->is('transaction/mutation*') ? 'active' : '' }}" href="{{ route('transaction.mutation.index') }}">Mutasi</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>
