@@ -61,4 +61,9 @@ Route::prefix('transaction')->name('transaction.')->group(function () {
 
     // Mutation
     Route::resource('mutation', 'MutationController');
+    Route::prefix('mutation')->name('mutation.')->group(function (){
+        Route::post('/create2', 'MutationController@Create2')->name('create2');
+        Route::post('/detail-insert', 'MutationController@detailInsert')->name('detail.insert');
+        Route::post('/detail-update', 'MutationController@detailUpdate')->name('detail.update');
+    });
 });

@@ -286,7 +286,7 @@ class SellingController extends Controller
                 'profit' => $profit
             ]);
 
-        return redirect('/transaction/selling/create');
+        return redirect('transaction/selling/create');
     }
 
     public function detailDelete($id)
