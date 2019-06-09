@@ -52,7 +52,7 @@
                                     <td>{{ $key->grand_total }}</td>
                                     <td class="d-flex">
                                         <a href="{{ route('transaction.selling.show', $key->code) }}" class="btn btn-secondary mr-2">Lihat</a>
-                                        <button class="btn btn-warning">Cetak</button>
+                                        <a href="{{ route('transaction.selling.print', $key->code) }}" class="btn btn-warning">Cetak</a>
                                     </td>
                                 </tr>
                                 @endforeach

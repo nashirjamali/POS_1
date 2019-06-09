@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use PDF;
 
 class SellingController extends Controller
 {
@@ -295,5 +296,39 @@ class SellingController extends Controller
             ->delete($id);
 
         return redirect('transaction/selling/create');
+    }
+
+    public function print($id)
+    {
+        $sellings = DB::table('sellings')
+            ->where('code', '=', $id)
+            ->join('customers', 'sellings.customer_id', '=', 'customers.id')
+            ->join('employees', 'sellings.cashier_id', '=', 'employees.id')
+            ->select([
+                'code',
+                'date',
+                'time',
+                'grand_total',
+                'note',
+                'discount',
+                'cash',
+                'change',
+                'sellings.sub_total as sub_total',
+                'customers.name as customer_name',
+                'customers.address as customer_address',
+                'customers.telephone as customer_telephone',
+                'employees.name as cashier_name'
+            ])
+            ->get();
+
+
+        $selling_details = DB::table('selling_details')
+            ->join('product_items', 'selling_details.product_item_code', '=', 'product_items.code')
+            ->where('selling_code', '=', $id)
+            ->get();
+
+            $customPaper = array(0,0,567.00,283.80);
+            $pdf = PDF::loadView('selling.selling_invoice', ['sellings' => $sellings, 'selling_details' => $selling_details])->setPaper($customPaper, 'landscape');
+            return $pdf->stream();
     }
 }

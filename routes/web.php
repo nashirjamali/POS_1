@@ -51,6 +51,7 @@ Route::prefix('transaction')->name('transaction.')->group(function () {
         Route::post('/create-detail', 'SellingController@detailInsert')->name('detail.create');
         Route::post('/update-detail/{id}', 'SellingController@detailUpdate')->name('detail.update');
         Route::get('/delete-detail/{id}', 'SellingController@detailDelete')->name('detail.delete');
+        Route::get('/{id}/print', 'SellingController@print')->name('print');
     });
 
     // Stock Out
