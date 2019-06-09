@@ -67,3 +67,6 @@ Route::prefix('transaction')->name('transaction.')->group(function () {
         Route::post('/detail-update', 'MutationController@detailUpdate')->name('detail.update');
     });
 });
+
+// Employees
+Route::resource('employee', 'EmployeeController');

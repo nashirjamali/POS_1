@@ -14,6 +14,9 @@ class EmployeesTableSeeder extends Seeder
         DB::table('employees')->insert([
             [
                 'name' => 'Nashir Jamali',
+                'level' => 'admin',
+                'username' => 'nashirjamali',
+                'password' => 'admin123',
                 'telephone' => '0895335182297',
                 'address' => 'Jl. Surabaya'
             ]

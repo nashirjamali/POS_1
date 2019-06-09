@@ -113,24 +113,11 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-item ">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-3" aria-controls="submenu-3"><i class="fab fa-fw fa-wpforms"></i>Laporan</a>
-                                <div id="submenu-3" class="collapse submenu" style="">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">Stok</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">Penjualan</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
                             <li class="nav-divider">
                                 Pengaturan
                             </li>
                             <li class="nav-item ">
-                                <a class="nav-link" href="#"><i class="fab fa-fw fa-wpforms"></i>Users</a>
+                                <a class="nav-link {{ request()->is('employee*') ? 'active' : '' }}" href="{{ route('employee.index') }}"><i class="fab fa-fw fa-wpforms"></i>Karyawan</a>
                             </li>
                         </ul>
                     </div>
