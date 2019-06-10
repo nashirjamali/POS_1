@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEmployeesTable extends Migration
+class CreateMutationTempsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateEmployeesTable extends Migration
      */
     public function up()
     {
-        Schema::create('employees', function (Blueprint $table) {
+        Schema::create('mutation_temps', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('level');
-            $table->string('username');
-            $table->string('password');
-            $table->string('address');
-            $table->string('telephone');
+            $table->integer('mutation_id');
+            $table->string('product_item_code')->index();
+            $table->foreign('product_item_code')->references('code')->on('product_items')->onDelete('cascade');
+            $table->integer('qty');
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ class CreateEmployeesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employees');
+        Schema::dropIfExists('mutation_temps');
     }
 }

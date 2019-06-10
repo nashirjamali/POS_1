@@ -43,18 +43,22 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                
+                                @foreach($stock_outs as $key)
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>{{ $key->code }}</td>
+                                    <td>{{ $key->name }}</td>
+                                    <td>{{ $key->qty }}</td>
+                                    <td>{{ $key->detail }}</td>
+                                    <td>{{ $key->date }}</td>
                                     <td class="d-flex">
-                                        <a href="" class="btn btn-danger">Delete</a>
+                                        <form action="{{route('transaction.stock-out.destroy',[$key->id])}}" method="POST">
+                                            <input type="hidden" name="_method" value="Delete">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="submit" class="btn btn-danger" value="Delete">
+                                        </form>
                                     </td>
                                 </tr>
-                                
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -67,5 +71,4 @@
 
 @push('custom-scripts')
 <script src="{{ asset('js/script.js')}}" type="text/javascript"></script>
-<script src="{{ asset('js/selling.js')}}" type="text/javascript"></script>
 @endpush

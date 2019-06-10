@@ -7,13 +7,12 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="page-header">
-                <h2 class="pageheader-title">Riwayat Penjualan</h2>
+                <h2 class="pageheader-title">Karyawan (User)</h2>
                 <p class="pageheader-text"></p>
                 <div class="page-breadcrumb">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Menu</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Riwayat Penjualan</li>
+                            <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Karyawan</a></li>
                         </ol>
                     </nav>
                 </div>
@@ -27,32 +26,35 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
                 <h5 class="card-header">
-                    <a href="{{ url('transaction/selling/create') }}" class="btn btn-primary text-light">Tambah Penjualan</a>
+                    <a href="{{ url('employee/create') }}" class="btn btn-primary text-light">Tambah Karyawan</a>
                 </h5>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table id="table" class="table table-striped table-bordered first">
                             <thead>
                                 <tr>
-                                    <th>Kode</th>
-                                    <th>Tanggal</th>
-                                    <th>Jam</th>
-                                    <th>Keuntungan</th>
-                                    <th>Total</th>
-                                    <th>Actions</th>
+                                    <th>Nama</th>
+                                    <th>Level</th>
+                                    <th>Username</th>
+                                    <th>Alamat</th>
+                                    <th>Telepon</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($sellings as $key)
+                                @foreach($employees as $key)
                                 <tr>
-                                    <td>{{ $key->code }}</td>
-                                    <td>{{ $key->date }}</td>
-                                    <td>{{ $key->time }}</td>
-                                    <td>{{ $key->profit_total }}</td>
-                                    <td>{{ $key->grand_total }}</td>
+                                    <td>{{ $key->name }}</td>
+                                    <td>{{ $key->level }}</td>
+                                    <td>{{ $key->username }}</td>
+                                    <td>{{ $key->address }}</td>
+                                    <td>{{ $key->telephone }}</td>
                                     <td class="d-flex">
-                                        <a href="{{ route('transaction.selling.show', $key->code) }}" class="btn btn-secondary mr-2">Lihat</a>
-                                        <a href="{{ route('transaction.selling.print', $key->code) }}" class="btn btn-warning">Cetak</a>
+                                        <form action="{{route('employee.destroy',[$key->id])}}" method="POST">
+                                            <input type="hidden" name="_method" value="Delete">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="submit" class="btn btn-danger" value="Delete">
+                                        </form>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -68,5 +70,4 @@
 
 @push('custom-scripts')
 <script src="{{ asset('js/script.js')}}" type="text/javascript"></script>
-<script src="{{ asset('js/selling.js')}}" type="text/javascript"></script>
 @endpush

@@ -1,7 +1,6 @@
 $(document).ready(function () {
-    $('#table').DataTable();
+    $('.table').DataTable();
     $('.select2').select2();
-
 
 });
 
