@@ -65,6 +65,7 @@ Route::group(['middleware'    => 'auth'], function () {
         // Mutation
         Route::resource('mutation', 'MutationController');
         Route::prefix('mutation')->name('mutation.')->group(function () {
+            Route::post('/insert', 'MutationController@insert')->name('insert');
             Route::get('/createAlt/{id}', 'MutationController@createAlt')->name('createalt');
             Route::post('/insert-temp', 'MutationController@detailInsert')->name('detail.insert');
             Route::post('/update-temp/{id}', 'MutationController@detailUpdate')->name('detail.update');

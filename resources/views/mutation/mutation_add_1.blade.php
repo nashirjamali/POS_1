@@ -32,16 +32,24 @@
                 <h5 class="card-header">
                     Informasi
                 </h5>
+
                 <div class="card-body">
+
+                    <!-- Date -->
+                    <div class="form-group">
+                        <label for="inputDate1">Tanggal</label>
+                        <input type="date" id="mutation-date" class="form-control">
+                    </div>
+
                     <div class="form-group">
                         <p>Toko Asal</p>
                         <h4>{{ $source->name }}</h4>
-                        
+
                     </div>
                     <hr>
                     <div class="form-group">
                         <label for="">Toko Tujuan</label>
-                        <select name="destination" id="destination" class="form-control">
+                        <select name="destination" id="destination_id" class="form-control">
                             @foreach($shops as $key)
                             <option value="{{ $key->id }}">{{ $key->name }}</option>
                             @endforeach
@@ -129,7 +137,12 @@
                                     <td>{{ $key->qty }}</td>
                                     <td class="d-flex">
                                         <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#editModal"><i class="fas fa-fw fa-edit"></i></button>
-                                        <a href="" class="btn btn-danger"><i class="fas fa-fw fa-trash"></i></a>
+
+                                        <form action="{{ route('transaction.mutation.detail.delete',$key->id) }}" method="POST">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="hidden" name="source_id" value="{{ $source->id }}">
+                                            <button type="submit" class="btn btn-danger"><i class="fas fa-fw fa-trash"></i></button>
+                                        </form>
                                     </td>
                                 </tr>
 
@@ -151,7 +164,7 @@
                                                     {{ csrf_field() }}
 
                                                     <input type="hidden" name="id" id="" value="{{ $key->id }}">
-                                                    <input type="hidden" value="{{ $source->id }}" name="source_id" id="source_id">
+                                                    <input type="hidden" value="{{ $source->id }}" name="source_id" id="">
 
                                                     <!-- Product Item Code -->
                                                     <div class="form-group">
@@ -195,7 +208,7 @@
     <!-- ============================================================== -->
     <!-- Button Submit -->
     <!-- ============================================================== -->
-    <button class="btn btn-primary btn-lg">Submit</button>
+    <button class="btn btn-primary btn-lg" id="btn-submit">Submit</button>
     <!-- ============================================================== -->
     <!-- End Button Submit -->
     <!-- ============================================================== -->
@@ -250,6 +263,9 @@
 <script src="{{ asset('js/script.js')}}" type="text/javascript"></script>
 <script>
     $(document).ready(function() {
+        var today = new Date().toISOString().substr(0, 10)
+        $('#mutation-date').val(today)
+
         $('.btn-select-item').click(function() {
             var row = $(this).closest("tr"),
                 code = row.find("td:nth-child(1)"),
@@ -263,6 +279,42 @@
                 $('#qty').attr('max', $(this).text())
                 $('#qty').attr('min', 1)
             })
+        })
+
+
+        $('#btn-submit').click(function() {
+            var destinationId = $('#destination_id').val()
+            var sourceId = $('#source_id').val()
+            var mutationDate = $('#mutation-date').val()
+            var _token = $('input[name="_token"]').val();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url: '{{ url("transaction/mutation/insert") }}',
+                method: "POST",
+                data: {
+                    mutationDate: mutationDate,
+                    destinationId: destinationId,
+                    sourceId: sourceId,
+                    _token: _token
+                },
+                success: data => {
+                    if (data == 1) {
+                        window.location.href = "/transaction/mutation";
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                    alert(ajaxOptions)
+                }
+            })
+
+
         })
     })
 </script>
