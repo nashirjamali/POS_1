@@ -118,12 +118,14 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-divider">
-                                Pengaturan
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link {{ request()->is('employee*') ? 'active' : '' }}" href="{{ route('employee.index') }}"><i class="fab fa-fw fa-wpforms"></i>Karyawan</a>
-                            </li>
+                            @if(Auth::user()->level == "admin")
+                                <li class="nav-divider">
+                                    Pengaturan
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link {{ request()->is('employee*') ? 'active' : '' }}" href="{{ route('employee.index') }}"><i class="fab fa-fw fa-wpforms"></i>Karyawan</a>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </nav>
