@@ -27,7 +27,7 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
                 <h5 class="card-header">
-                    <a href="{{ route('transaction.mutation.create') }}" class="btn btn-primary text-light">Tambah Mutasi</a>
+                    <button class="btn btn-primary text-light" data-target="#shopModal" data-toggle="modal">Tambah Mutasi</button>
                 </h5>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -42,7 +42,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                
+
                                 <tr>
                                     <td></td>
                                     <td></td>
@@ -57,7 +57,7 @@
                                         </form>
                                     </td>
                                 </tr>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -66,6 +66,48 @@
         </div>
     </div>
 </div>
+<!-- ============================================================== -->
+<!-- Source Shop Modal -->
+<!-- ============================================================== -->
+<div class="modal fade" id="shopModal" tabindex="-1" role="dialog" aria-labelledby="shopModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl mw-100 w-50" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pilih Kota Asal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table id="table" class="table table-striped table-bordered first">
+                        <thead>
+                            <tr>
+                                <th>Nama</th>
+                                <th>Alamat</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($shops as $key)
+                            <tr>
+                                <td>{{ $key->name }}</td>
+                                <td>{{ $key->address }}</td>
+                                <td>
+                                    <a href="{{ route('transaction.mutation.createalt', $key->id ) }}" class="btn btn-info mr-2">Pilih</a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Source Shop Modal -->
+<!-- ============================================================== -->
 @stop
 
 @push('custom-scripts')

@@ -14,7 +14,8 @@ class MutationController extends Controller
      */
     public function index()
     {
-        return view('mutation.mutation_data');
+        $shops = DB::table('shops')->get();
+        return view('mutation.mutation_data', ['shops' => $shops]);
     }
 
     /**
@@ -97,23 +98,23 @@ class MutationController extends Controller
         }
     }
 
-    public function Create2(Request $request)
+    public function createAlt($id)
     {
-        $source_id = $request->get('source_id');
+        $source = DB::table('shops')->where('id', '=', $id)->first();
+        $shops = DB::table('shops')->get();
         $stocks = DB::table('stocks')
-            ->where('shop_id', '=', $source_id)
+            ->where('shop_id', '=', $id)
             ->join('product_items', 'stocks.product_item_code', '=', 'product_items.code')
             ->get();
-
         $temps = DB::table('mutation_temps')
-            ->join('product_items', 'product_items.code', '=', 'mutation_temps.product_item_code')
+            ->join('product_items', 'mutation_temps.product_item_code', '=', 'product_items.code')
             ->get();
-
-        return view('mutation.mutation_add_2', ['stocks' => $stocks, 'temps' => $temps]);
+        return view('mutation.mutation_add_1', ['stocks' => $stocks, 'temps' => $temps, 'shops' => $shops, 'source' => $source]);
     }
 
     public function detailInsert(Request $request)
     {
+        $source_id = $request->get('source_id');
         $mutation_id = $this->genereteId();
         $product_item_code = $request->get('item_code');
         $qty = $request->get('qty');
@@ -124,12 +125,12 @@ class MutationController extends Controller
             'qty' => $qty
         ]);
 
-        return redirect('transaction/mutation/create2');
+        return redirect('/transaction/mutation/createAlt/' . $source_id);
     }
 
-    public function detailUpdate(Request $request)
+    public function detailUpdate(Request $request, $id)
     {
-        $id = $request->get('id');
+        $source_id = $request->get('source_id');
         $qty = $request->get('qty');
 
         DB::table('mutation_temps')
@@ -138,6 +139,11 @@ class MutationController extends Controller
                 'qty' => $qty
             ]);
 
-        return redirect()->to('/transaction/mutation/create2');
+        return redirect('/transaction/mutation/createAlt/' . $source_id);
+    }
+
+    public function detailDelete(Request $request)
+    {
+        
     }
 }

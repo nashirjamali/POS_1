@@ -70,10 +70,10 @@
                                 Menu
                             </li>
                             <li class="nav-item ">
-                                <a class="nav-link {{ request()->is('dashboard*') ? 'active' : '' }} " href="{{ url('/') }}"><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
+                                <a class="nav-link {{ request()->is('dashboard*') ? 'active' : '' }} " href="{{ url('/') }}"><i class="fa fa-fw fa-columns"></i>Dashboard</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {{ request()->is('supplier*') ? 'active' : '' }} " href="{{ route('supplier.index') }}"><i class="fa fa-fw fa-rocket"></i>Supplier</a>
+                                <a class="nav-link {{ request()->is('supplier*') ? 'active' : '' }} " href="{{ route('supplier.index') }}"><i class="fa fa-fw fa-box-open"></i>Supplier</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->is('product*') ? 'active' : '' }}" href="{{ route('product.item.index') }}" data-toggle="collapse" aria-expanded="{{ request()->is('product*') ? 'true' : 'false' }}" data-target="#submenu-1" aria-controls="submenu-1"><i class="fas fa-fw fa-chart-pie"></i>Produk</a>
