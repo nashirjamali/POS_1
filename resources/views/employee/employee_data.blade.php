@@ -50,6 +50,9 @@
                                     <td>{{ $key->address }}</td>
                                     <td>{{ $key->telephone }}</td>
                                     <td class="d-flex">
+                                        @if($key->level!="admin")
+                                            <a href="{{ route('employee.edit',$key->id)}}" class="btn btn-warning">Edit</a>
+                                        @endif
                                         <form action="{{route('employee.destroy',[$key->id])}}" method="POST">
                                             <input type="hidden" name="_method" value="Delete">
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">

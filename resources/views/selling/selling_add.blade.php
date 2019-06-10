@@ -64,8 +64,8 @@
                         <!-- Cashier -->
                         <div class="form-group">
                             <label>Kasir</label>
-                            <input name="cashier" value="{{ $cashier->id }}" id="cashier" type="hidden" class="form-control">
-                            <input value="{{ $cashier->name }}" type="text" disabled class="form-control">
+                            <input name="cashier" value="{{ Auth::user()->name }}" id="cashier" type="hidden" class="form-control">
+                            <input value="{{ Auth::user()->name }}" type="text" disabled class="form-control">
                         </div>
 
                     </form>

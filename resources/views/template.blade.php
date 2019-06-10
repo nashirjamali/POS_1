@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Concept - Bootstrap 4 Admin Dashboard Template</title>
+    <title>POS-XXCELL</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('assets/assets/vendor/bootstrap/css/bootstrap.min.css') }}">
     <link href="{{ asset('assets/assets/vendor/fonts/circular-std/style.css') }}" rel="stylesheet">
@@ -18,7 +18,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/assets/vendor/datatables/css/fixedHeader.bootstrap4.css') }}">
 
     <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
-
 </head>
 
 <body>
@@ -41,10 +40,16 @@
                             <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('assets/assets/images/avatar-1.jpg') }}" alt="" class="user-avatar-md rounded-circle"></a>
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
                                 <div class="nav-user-info">
-                                    <h5 class="mb-0 text-white nav-user-name">John Abraham</h5>
+                                    <h5 class="mb-0 text-white nav-user-name">{{Auth::user()->name}}</h5>
                                     <span class="status"></span><span class="ml-2">Available</span>
                                 </div>
-                                <a class="dropdown-item" href="#"><i class="fas fa-power-off mr-2"></i>Logout</a>
+                                <a class="dropdown-item" href="{{ route('logout') }}"  onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();"> <i class="fas fa-power-off mr-2"></i>
+                                {{ __('Logout') }} 
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
                             </div>
                         </li>
                     </ul>
@@ -113,12 +118,14 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-divider">
-                                Pengaturan
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link {{ request()->is('employee*') ? 'active' : '' }}" href="{{ route('employee.index') }}"><i class="fab fa-fw fa-wpforms"></i>Karyawan</a>
-                            </li>
+                            @if(Auth::user()->level == "admin")
+                                <li class="nav-divider">
+                                    Pengaturan
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link {{ request()->is('employee*') ? 'active' : '' }}" href="{{ route('employee.index') }}"><i class="fab fa-fw fa-wpforms"></i>Karyawan</a>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </nav>

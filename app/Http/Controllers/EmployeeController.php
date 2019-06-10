@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class EmployeeController extends Controller
 {
@@ -40,7 +41,7 @@ class EmployeeController extends Controller
         $name = $request->get('name');
         $level = $request->get('level');
         $username = $request->get('username');
-        $password = $request->get('password');
+        $password = Hash::make($request->get('password'));
         $address = $request->get('address');
         $telephone = $request->get('telephone');
 
@@ -51,6 +52,13 @@ class EmployeeController extends Controller
             'password' => $password,
             'telephone' => $telephone,
             'address' => $address
+        ]);
+
+        DB::table('users')->insert([
+            'name' => $name,
+            'level' => $level,
+            'username' => $username,
+            'password' => $password
         ]);
 
         return redirect('employee');
@@ -92,7 +100,7 @@ class EmployeeController extends Controller
         $name = $request->get('name');
         $level = $request->get('level');
         $username = $request->get('username');
-        $password = $request->get('password');
+        $password =  Hash::make($request->get('password'));
         $address = $request->get('address');
         $telephone = $request->get('telephone');
 
@@ -103,6 +111,13 @@ class EmployeeController extends Controller
             'password' => $password,
             'telephone' => $telephone,
             'address' => $address
+        ]);
+
+        DB::table('users')->where('id', '=', $id)->update([
+            'name' => $name,
+            'level' => $level,
+            'username' => $username,
+            'password' => $password
         ]);
 
         return redirect('employee');
@@ -117,6 +132,7 @@ class EmployeeController extends Controller
     public function destroy($id)
     {
         DB::table('employees')->delete($id);
+        DB::table('users')->delete($id);
         return redirect('employee');
     }
 }
