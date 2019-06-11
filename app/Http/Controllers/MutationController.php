@@ -20,6 +20,7 @@ class MutationController extends Controller
             ->join('shops as source', 'source.id', '=', 'mutations.source_id')
             ->join('shops as destination', 'destination.id', '=', 'mutations.destination_id')
             ->select(
+                'mutations.code',
                 'mutations.id',
                 'date',
                 'destination.name as destination_name',
@@ -61,7 +62,25 @@ class MutationController extends Controller
      */
     public function show($id)
     {
-        //
+        $mutations = DB::table('mutations')->where('code', '=', $id)
+            ->join('shops as source', 'source.id', '=', 'mutations.source_id')
+            ->join('shops as destination', 'destination.id', '=', 'mutations.destination_id')
+            ->select(
+                'source.name as source_name',
+                'destination.name as destination_name',
+                'source.address as source_address',
+                'destination.address as destination_address',
+                'code',
+                'date'
+            )
+            ->first();
+
+        $mutation_details = DB::table('mutation_details')
+            ->where('mutation_code', '=', $id)
+            ->join('product_items', 'product_items.code', '=', 'mutation_details.product_item_code')
+            ->get();
+
+        return view('mutation.mutation_detail', ['mutations' => $mutations, 'mutation_details' => $mutation_details]);
     }
 
     /**

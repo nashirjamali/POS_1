@@ -249,7 +249,7 @@ class PurchaseController extends Controller
             ->where('purchase_code', '=', $purchase_code)
             ->delete();
 
-        return redirect('/transaction/purchase');
+        return 1;
     }
 
 

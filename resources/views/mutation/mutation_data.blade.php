@@ -54,7 +54,7 @@
                                     <td>{{ $key->destination_name }}</td>
                                     <td>{{ $key->total_item }}</td>
                                     <td class="d-flex">
-                                        <a href="" class="btn btn-warning mr-2">Detail</a>
+                                        <a href="{{ route('transaction.mutation.show', $key->code) }}" class="btn btn-warning mr-2">Detail</a>
                                         <form action="{{route('transaction.mutation.destroy',[$key->id])}}" method="POST">
                                             <input type="hidden" name="_method" value="Delete">
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
