@@ -15,7 +15,7 @@ class CreateMutationTempsTable extends Migration
     {
         Schema::create('mutation_temps', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('mutation_id');
+            $table->string('mutation_code');
             $table->string('product_item_code')->index();
             $table->foreign('product_item_code')->references('code')->on('product_items')->onDelete('cascade');
             $table->integer('qty');

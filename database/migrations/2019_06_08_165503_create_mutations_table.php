@@ -15,6 +15,7 @@ class CreateMutationsTable extends Migration
     {
         Schema::create('mutations', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('code')->index();
             $table->date('date');
             $table->bigInteger('source_id')->unsigned();
             $table->foreign('source_id')->references('id')->on('shops')->onDelete('cascade');

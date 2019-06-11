@@ -15,8 +15,8 @@ class CreateMutationDetailsTable extends Migration
     {
         Schema::create('mutation_details', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('mutation_id')->unsigned();
-            $table->foreign('mutation_id')->references('id')->on('mutations')->onDelete('cascade');
+            $table->string('mutation_code')->index();
+            $table->foreign('mutation_code')->references('code')->on('mutations')->onDelete('cascade');
             $table->string('product_item_code')->index();
             $table->foreign('product_item_code')->references('code')->on('product_items')->onDelete('cascade');
             $table->integer('qty');
