@@ -220,7 +220,7 @@ class SellingController extends Controller
 
         DB::table('selling_temps')->where('selling_code', '=', $selling_code)->delete();
 
-        return 1;
+        return $selling_code;
     }
 
     public function genereteCode()

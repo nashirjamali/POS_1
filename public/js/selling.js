@@ -78,8 +78,8 @@ $(document).ready(function () {
                 _token: _token
             },
             success: data => {
-                if (data == 1) {
-                    window.location.href = "/transaction/selling";
+                if (data) {
+                    window.location.href = "/transaction/selling/" + data + "/print";
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {

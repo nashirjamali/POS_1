@@ -30,7 +30,7 @@
         <!-- ============================================================== -->
         <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                <a class="navbar-brand" href="../index.html">Concept</a>
+                <a class="navbar-brand" href="/">POS</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -65,15 +65,11 @@
         <div class="nav-left-sidebar sidebar-dark">
             <div class="menu-list">
                 <nav class="navbar navbar-expand-lg navbar-light">
-                    <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav flex-column">
-                            <li class="nav-divider">
-                                Menu
-                            </li>
                             <li class="nav-item ">
                                 <a class="nav-link {{ request()->is('dashboard*') ? 'active' : '' }} " href="{{ url('/') }}"><i class="fa fa-fw fa-columns"></i>Dashboard</a>
                             </li>
@@ -81,7 +77,7 @@
                                 <a class="nav-link {{ request()->is('supplier*') ? 'active' : '' }} " href="{{ route('supplier.index') }}"><i class="fa fa-fw fa-box-open"></i>Supplier</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {{ request()->is('product*') ? 'active' : '' }}" href="{{ route('product.item.index') }}" data-toggle="collapse" aria-expanded="{{ request()->is('product*') ? 'true' : 'false' }}" data-target="#submenu-1" aria-controls="submenu-1"><i class="fas fa-fw fa-chart-pie"></i>Produk</a>
+                                <a class="nav-link {{ request()->is('product*') ? 'active' : '' }}" href="{{ route('product.item.index') }}" data-toggle="collapse" aria-expanded="{{ request()->is('product*') ? 'true' : 'false' }}" data-target="#submenu-1" aria-controls="submenu-1"><i class="fas fa-fw fa-box"></i>Produk</a>
                                 <div id="submenu-1" class="collapse submenu {{ request()->is('product*') ? 'show' : '' }}" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
@@ -97,10 +93,10 @@
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {{ request()->is('shop*') ? 'active' : '' }} " href="{{ route('shop.index') }}"><i class="fa fa-fw fa-rocket"></i>Toko</a>
+                                <a class="nav-link {{ request()->is('shop*') ? 'active' : '' }} " href="{{ route('shop.index') }}"><i class="fa fa-fw fa-home"></i>Toko</a>
                             </li>
                             <li class="nav-item ">
-                                <a class="nav-link {{ request()->is('transaction*') ? 'active' : '' }}" href="" data-toggle="collapse" aria-expanded="{{ request()->is('transaction*') ? 'true' : 'false' }}" data-target="#submenu-2" aria-controls="submenu-2"><i class="fab fa-fw fa-wpforms"></i>Transaksi</a>
+                                <a class="nav-link {{ request()->is('transaction*') ? 'active' : '' }}" href="" data-toggle="collapse" aria-expanded="{{ request()->is('transaction*') ? 'true' : 'false' }}" data-target="#submenu-2" aria-controls="submenu-2"><i class="fa fa-fw fa-exchange-alt"></i>Transaksi</a>
                                 <div id="submenu-2" class="collapse submenu {{ request()->is('transaction*') ? 'show' : '' }}" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
@@ -123,7 +119,7 @@
                                     Pengaturan
                                 </li>
                                 <li class="nav-item ">
-                                    <a class="nav-link {{ request()->is('employee*') ? 'active' : '' }}" href="{{ route('employee.index') }}"><i class="fab fa-fw fa-wpforms"></i>Karyawan</a>
+                                    <a class="nav-link {{ request()->is('employee*') ? 'active' : '' }}" href="{{ route('employee.index') }}"><i class="fa fa-fw fa-user-circle"></i>Karyawan</a>
                                 </li>
                             @endif
                         </ul>

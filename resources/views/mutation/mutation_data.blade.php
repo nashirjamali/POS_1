@@ -25,6 +25,11 @@
     <!-- ============================================================== -->
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            @if (session('status'))
+            <div class="alert alert-warning">
+                {{ session('status') }}
+            </div>
+            @endif
             <div class="card">
                 <h5 class="card-header">
                     <button class="btn btn-primary text-light" data-target="#shopModal" data-toggle="modal">Tambah Mutasi</button>
@@ -49,8 +54,12 @@
                                     <td>{{ $key->destination_name }}</td>
                                     <td>{{ $key->total_item }}</td>
                                     <td class="d-flex">
-                                        <a href="" class="btn btn-warning mr-2">Detail</a>
-                                        <a href="" class="btn btn-secondary">Edit</a>
+                                        <a href="{{ route('transaction.mutation.show', $key->code) }}" class="btn btn-warning mr-2">Detail</a>
+                                        <form action="{{route('transaction.mutation.destroy',[$key->id])}}" method="POST">
+                                            <input type="hidden" name="_method" value="Delete">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="submit" class="btn btn-danger" value="Delete">
+                                        </form>
                                     </td>
                                 </tr>
                                 @endforeach

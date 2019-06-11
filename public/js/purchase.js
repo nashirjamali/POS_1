@@ -63,7 +63,9 @@ $(document).ready(function () {
                 _token: _token
             },
             success: data => {
-                data
+                if (data == 1) {
+                    window.location.href = "/transaction/purchase";
+                }
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);

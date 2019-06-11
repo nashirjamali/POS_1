@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class MutationController extends Controller
 {
@@ -16,15 +17,17 @@ class MutationController extends Controller
     {
         $shops = DB::table('shops')->get();
         $mutations = DB::table('mutations')
-        ->join('shops as source', 'source.id', '=', 'mutations.source_id')
-        ->join('shops as destination', 'destination.id', '=', 'mutations.destination_id')
-        ->select(
-            'date',
-            'destination.name as destination_name',
-            'source.name as source_name',
-            'total_item'
-        )
-        ->get();
+            ->join('shops as source', 'source.id', '=', 'mutations.source_id')
+            ->join('shops as destination', 'destination.id', '=', 'mutations.destination_id')
+            ->select(
+                'mutations.code',
+                'mutations.id',
+                'date',
+                'destination.name as destination_name',
+                'source.name as source_name',
+                'total_item'
+            )
+            ->get();
         return view('mutation.mutation_data', ['shops' => $shops, 'mutations' => $mutations]);
     }
 
@@ -59,7 +62,25 @@ class MutationController extends Controller
      */
     public function show($id)
     {
-        //
+        $mutations = DB::table('mutations')->where('code', '=', $id)
+            ->join('shops as source', 'source.id', '=', 'mutations.source_id')
+            ->join('shops as destination', 'destination.id', '=', 'mutations.destination_id')
+            ->select(
+                'source.name as source_name',
+                'destination.name as destination_name',
+                'source.address as source_address',
+                'destination.address as destination_address',
+                'code',
+                'date'
+            )
+            ->first();
+
+        $mutation_details = DB::table('mutation_details')
+            ->where('mutation_code', '=', $id)
+            ->join('product_items', 'product_items.code', '=', 'mutation_details.product_item_code')
+            ->get();
+
+        return view('mutation.mutation_detail', ['mutations' => $mutations, 'mutation_details' => $mutation_details]);
     }
 
     /**
@@ -93,23 +114,34 @@ class MutationController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('mutation_details')->where('mutation_code', '=', $id)->delete();
+        DB::table('mutations')->delete($id);
+
+        return redirect('transaction/mutation')->with('status', 'Riwayat mutasi berhasil dihapus, namun stok barang tidak berubah');
     }
 
-    public function genereteId()
+    public function genereteCode()
     {
+        $today = Carbon::today();
+        $year = $today->year()->format('Y');
+        $month = $today->month()->format('m');
+        $day = $today->day()->format('d');
+        $first = 'MT';
         $id = DB::table('mutations')->select('id')->latest()->first();
 
         if ($id == null) {
-            return 1;
+            $code = $first . $year . $month . $day . 0;
         } else {
-            $id = (int)$id + 1;
-            return $id;
+            $last = (int)$id->id + 1;
+            $code = $first . $year . $month . $day . $last;
         }
+
+        return $code;
     }
 
     public function createAlt($id)
     {
+        $mutation_code = $this->genereteCode();
         $source = DB::table('shops')->where('id', '=', $id)->first();
         $shops = DB::table('shops')->get();
         $stocks = DB::table('stocks')
@@ -119,18 +151,18 @@ class MutationController extends Controller
         $temps = DB::table('mutation_temps')
             ->join('product_items', 'mutation_temps.product_item_code', '=', 'product_items.code')
             ->get();
-        return view('mutation.mutation_add_1', ['stocks' => $stocks, 'temps' => $temps, 'shops' => $shops, 'source' => $source]);
+        return view('mutation.mutation_add_1', ['stocks' => $stocks, 'temps' => $temps, 'shops' => $shops, 'source' => $source, 'mutation_code' => $mutation_code]);
     }
 
     public function detailInsert(Request $request)
     {
         $source_id = $request->get('source_id');
-        $mutation_id = $this->genereteId();
+        $mutation_code = $this->genereteCode();
         $product_item_code = $request->get('item_code');
         $qty = $request->get('qty');
 
         DB::table('mutation_temps')->insert([
-            'mutation_id' => $mutation_id,
+            'mutation_code' => $mutation_code,
             'product_item_code' => $product_item_code,
             'qty' => $qty
         ]);
@@ -161,14 +193,15 @@ class MutationController extends Controller
 
     public function insert(Request $request)
     {
-        $mutation_id = $this->genereteId();
+        $mutation_code = $this->genereteCode();
         $date = $request->get('mutationDate');
         $source_id = $request->get('sourceId');
         $destination_id = $request->get('destinationId');
-        $total_item = $mutation_temps = DB::table('mutation_temps')->where('mutation_id', '=', $mutation_id)->count();
-        $mutation_temps = DB::table('mutation_temps')->where('mutation_id', '=', $mutation_id)->get();
+        $total_item = $mutation_temps = DB::table('mutation_temps')->where('mutation_code', '=', $mutation_code)->count();
+        $mutation_temps = DB::table('mutation_temps')->where('mutation_code', '=', $mutation_code)->get();
 
         DB::table('mutations')->insert([
+            'code' => $mutation_code,
             'date' => $date,
             'source_id' => $source_id,
             'destination_id' => $destination_id,
@@ -177,7 +210,7 @@ class MutationController extends Controller
 
         foreach ($mutation_temps as $key) {
             DB::table('mutation_details')->insert([
-                'mutation_id' => $key->mutation_id,
+                'mutation_code' => $key->mutation_code,
                 'product_item_code' => $key->product_item_code,
                 'qty' => $key->qty
             ]);
@@ -187,12 +220,25 @@ class MutationController extends Controller
                 ->where('product_item_code', '=', $key->product_item_code)
                 ->count();
 
+
             if ($destinationStock == 0) {
                 DB::table('stocks')->insert([
                     'shop_id' => $destination_id,
                     'product_item_code' => $key->product_item_code,
                     'stock' => $key->qty
                 ]);
+
+                $stockOldSource = DB::table('stocks')
+                    ->where('shop_id', '=', $source_id)
+                    ->where('product_item_code', '=', $key->product_item_code)
+                    ->first()->stock;
+
+                DB::table('stocks')
+                    ->where('shop_id', '=', $source_id)
+                    ->where('product_item_code', '=', $key->product_item_code)
+                    ->update([
+                        'stock' => $stockOldSource - $key->qty
+                    ]);
             } else {
                 $stockOldDestination = DB::table('stocks')
                     ->where('shop_id', '=', $destination_id)
@@ -215,7 +261,7 @@ class MutationController extends Controller
                     ->where('shop_id', '=', $source_id)
                     ->where('product_item_code', '=', $key->product_item_code)
                     ->update([
-                        'stock' => $stockOldSource + $key->qty
+                        'stock' => $stockOldSource - $key->qty
                     ]);
             }
 
