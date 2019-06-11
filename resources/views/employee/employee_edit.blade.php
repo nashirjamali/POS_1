@@ -37,7 +37,14 @@
                         <div class="form-group">
                             <label for="inputText1">Nama *</label>
                             <input id="name" type="text" class="form-control" value="{{ $key->name}}" name="name" required>
+                            <input type="text" name="id" value="{{$key->id}}" hidden>
                         </div>
+
+                        <!-- jabatan -->
+                        <div class="form-group">
+                           <label>jabatan *</label>
+                           <input type="text" name="jabatan" class="form-control" value="{{$key->job_title}}" required>
+                       </div>
 
                         <!-- Level -->
                         <div class="form-group">
@@ -51,7 +58,9 @@
                         <!-- Username -->
                         <div class="form-group">
                             <label>Username *</label>
-                            <input type="text" name="username" value="{{ $key->username}}" class="form-control" required>
+                            @foreach($users as $user)
+                                <input type="text" name="username" value="{{$user->username}}" class="form-control" required>
+                            @endforeach
                         </div>
 
                         <!-- Password -->
@@ -63,7 +72,7 @@
                         <!-- Address -->
                         <div class="form-group">
                             <label>Alamat *</label>
-                            <textarea rows="2" name="address" value="{{ $key->address}}" class="form-control" required></textarea>
+                            <textarea rows="2" name="address" class="form-control" required>{{ $key->address}}</textarea>
                         </div>
 
                         <!-- Telephone -->

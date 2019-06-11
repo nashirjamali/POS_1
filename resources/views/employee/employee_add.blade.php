@@ -35,6 +35,13 @@
                         <div class="form-group">
                             <label for="inputText1">Nama *</label>
                             <input id="name" type="text" class="form-control" name="name" required>
+                            <input type="text" name="id" value="{{$id}}" hidden>
+                        </div>
+
+                         <!-- jabatan -->
+                         <div class="form-group">
+                            <label>jabatan *</label>
+                            <input type="text" name="jabatan" class="form-control" required>
                         </div>
 
                         <!-- Level -->

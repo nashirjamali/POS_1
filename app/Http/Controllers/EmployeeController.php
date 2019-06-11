@@ -27,7 +27,9 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        return view('employee.employee_add');
+        $generatecode = DB::table('employees')->select('id')->latest('id')->first();
+        $id=$generatecode->id+1;
+        return view('employee.employee_add',['id'=>$id]);
     }
 
     /**
@@ -38,23 +40,24 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
+        $id = $request->get('id');
         $name = $request->get('name');
         $level = $request->get('level');
         $username = $request->get('username');
         $password = Hash::make($request->get('password'));
         $address = $request->get('address');
         $telephone = $request->get('telephone');
+        $jobtitle = $request->get('jabatan');
 
         DB::table('employees')->insert([
             'name' => $name,
-            'level' => $level,
-            'username' => $username,
-            'password' => $password,
-            'telephone' => $telephone,
-            'address' => $address
+            'job_title' => $jobtitle,
+            'address' => $address,
+            'telephone' => $telephone
         ]);
 
         DB::table('users')->insert([
+            'employee_id' => $id,
             'name' => $name,
             'level' => $level,
             'username' => $username,
@@ -85,7 +88,9 @@ class EmployeeController extends Controller
     {
         $employee = DB::table('employees')->where('id', '=', $id)->get();
 
-        return view('employee.employee_edit', ['employee' => $employee]);
+        $users = DB::table('users')->where('id', '=', $id)->get();
+
+        return view('employee.employee_edit', ['employee' => $employee, 'users'=>$users]);
     }
 
     /**
@@ -97,23 +102,24 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $id = $request->get('id');
         $name = $request->get('name');
         $level = $request->get('level');
         $username = $request->get('username');
-        $password =  Hash::make($request->get('password'));
+        $password = Hash::make($request->get('password'));
         $address = $request->get('address');
         $telephone = $request->get('telephone');
+        $jobtitle = $request->get('jabatan');
 
         DB::table('employees')->where('id', '=', $id)->update([
             'name' => $name,
-            'level' => $level,
-            'username' => $username,
-            'password' => $password,
-            'telephone' => $telephone,
-            'address' => $address
+            'job_title' => $jobtitle,
+            'address' => $address,
+            'telephone' => $telephone
         ]);
 
         DB::table('users')->where('id', '=', $id)->update([
+            'employee_id' => $id,
             'name' => $name,
             'level' => $level,
             'username' => $username,

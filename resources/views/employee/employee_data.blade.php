@@ -34,8 +34,7 @@
                             <thead>
                                 <tr>
                                     <th>Nama</th>
-                                    <th>Level</th>
-                                    <th>Username</th>
+                                    <th>Jabatan</th>
                                     <th>Alamat</th>
                                     <th>Telepon</th>
                                     <th>Action</th>
@@ -45,12 +44,11 @@
                                 @foreach($employees as $key)
                                 <tr>
                                     <td>{{ $key->name }}</td>
-                                    <td>{{ $key->level }}</td>
-                                    <td>{{ $key->username }}</td>
+                                    <td>{{ $key->job_title }}</td>
                                     <td>{{ $key->address }}</td>
                                     <td>{{ $key->telephone }}</td>
                                     <td class="d-flex">
-                                        @if($key->level!="admin")
+                                        @if($key->job_title!="admin")
                                             <a href="{{ route('employee.edit',$key->id)}}" class="btn btn-warning">Edit</a>
                                         @endif
                                         <form action="{{route('employee.destroy',[$key->id])}}" method="POST">
